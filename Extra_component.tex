@@ -1,0 +1,116 @@
+\section{Pseudo-group Codes with $\{0,1\}$ Generator Matrices}\label{sec: adding ext comp}
+
+Consider the group codes with $\{0,1 \}$-generator matrices that studied previously. We add an extra component to them. Define the code $\mathcal{C}$ as :
+
+\begin{align*}
+\mathcal{C}:=\{ u^k\mathbf{G}+v^l \mathbf{\Delta G} +b^n| u^k \in \ZZ_4^k, v^l\in \{ 0,1\}^l\}
+\end{align*} 
+
+where $\mathbf{G}, \mathbf{\Delta G}$ are matrices with size $k\times n$ and $l \times n$, respectively. Similar to the consequence encoding scheme proposed in the previous section, we add two other codes to encode messages before encoding them by $\mathcal{C}$. For this matter, we use  two group codes, $\mathcal{O}$ for $u^k$'s and $\mathcal{O}_\Delta$ for $v^l$'s. Where:
+
+\begin{align*}
+\mathcal{O} &:=\{\upsilon^{k'}\mathbf{A} | \upsilon^{k'} \in \ZZ_4^{k'} \}\\
+\mathcal{O}_\Delta &:=\{\nu^{l'}\mathbf{\Delta A} | \nu^{l'} \in \{0, 1\}^{l'} \}\\
+\end{align*}
+
+Where $\mathbf{A}, \mathbf{\Delta A}$ are some fixed matrices with elements in $\ZZ_4$. Therefore, if $\upsilon^{k'}, \nu^{l'}$ are messages for $\mathcal{O}, \mathcal{O}_\Delta$, respectively, then we get:
+
+
+\begin{align*}
+x^n&=u^k\mathbf{G}+v^l \mathbf{\Delta G} +b^n\\
+u^k&=\upsilon^{k'}\mathbf{A}\\
+v^l&=\nu^{l'}\mathbf{\Delta A}
+\end{align*}
+
+
+Let $\delta_k = O(1/\sqrt{k}), \delta_l = O(1/\sqrt{l})$, we set the minimum distance of $\mathcal{O}, \mathcal{O}_\Delta$ to be $\delta_k, \delta_l$  with rate $2-O(\frac{\log(k)}{k}), 2-O(\frac{\log(l)}{l})$, respectively. Existence of these codes is discussed in Lemma \ref{lem: code_existence}. We use $\mathcal{O}, \mathcal{O}_\Delta$ to avoid cases in the analysis of the probability of error for $\mathcal{C}$ where two input vectors $u^k, \tilde{u}^k$ or $v^l, \tilde{v}^l$ are too close to each other with relative distance of $O(1/k)$ or $O(1/l)$, respectively. For more convenience, we avoid mentioning $\mathcal{O}, \mathcal{O}_\Delta$ in the analysis. Instead we simply do not consider cases where $\delta_H(u^k,\tilde{u}^k)=O(1/n)$ and $\delta_H(v^l,\tilde{v}^l)=O(1/n)$.
+
+Now choose elements of $\mathbf{G}, \mathbf{\Delta G}$ randomly, uniformly and independently from  $\{ 0,1\}$. This makes an ensemble of all codes of the form $\mathcal{C}$. Similar to the analysis of the average error probability for group codes with $\{ 0,1\}$ generator matrices in Section \ref{sec: group codes with 0,1 gen mtx}, for an arbitrary discrete memoryless channel $(\mathcal{X}=\ZZ_4, \mathcal{Y}, W)$, the probability of error for a fixed $\mathbf{G}, \mathbf{\Delta G}$ is
+
+
+
+\begin{align*}
+P_{err}(\mathbf{G},\mathbf{\Delta G},b^n):=\sum_{u^k\in \ZZ_4^k}\frac{1}{4^k} \sum_{v^l\in \{0,1 \}^l} \frac{1}{2^l} \sum_{x^n\in A_\epsilon^n(X)} \mathbbm{1}\{ u^k \mathbf{G}+v^l\mathbf{\Delta G}+b^n=x^n\}\\
+ \sum_{y^n\in A_\epsilon^n(Y|x^n)}  W^n(y^n|x^n) \mathbbm{1}\{ \exists ~ \tilde{x}^n\in \mathcal{C} \cap A_\epsilon^n(X|y^n), \tilde{x}^n\neq x^n \}
+\end{align*}
+
+Now averaging over all codes of the ensemble gives:
+
+\begin{align}\nonumber \label{equ: p_err_trans}
+P_{err}&=\EE\{ P_{err}(\mathbf{G},\mathbf{\Delta G},b^n) \}\\\nonumber
+&=\sum_{u^k\in \ZZ_4^k} \sum_{\substack{\tilde{u}^k \in \ZZ_4^k }} \sum_{v^l\in \{0,1\}^l} \sum_{\substack{\tilde{v}^l \in \{0, 1\}^l}}  \sum_{x^n\in A_\epsilon^n(X)} \sum_{y^n\in A_\epsilon^n(Y|x^n)}\\
+& \sum_{\substack{\tilde{x}^n\in A_\epsilon^n(X|y^n)\\
+ \tilde{x}^n\neq x^n}} \frac{1}{4^k} \frac{1}{2^l} W^n(y^n|x^n) \PP\{ \tilde{u}^k\mathbf{G}+\tilde{v}^l\mathbf{\Delta G}+b^n=\tilde{x}^n, u^k \mathbf{G}+v^l\mathbf{\Delta G}+b^n=x^n\} 
+\end{align} 
+ 
+ 
+As $b^n$ is uniform and  independent of all other random variables :
+$$
+\PP\{ \tilde{u}^k\mathbf{G}+\tilde{v}^l\mathbf{\Delta G}+b^n=\tilde{x}^n, u^k \mathbf{G}+v^l\mathbf{\Delta G}+b^n=x^n\} = \frac{1}{4^n}\PP\{ (\tilde{u}^k-u^k)\mathbf{G}+(\tilde{v}^l-v^l)\mathbf{\Delta G}=(\tilde{x}^n-x^n)\}
+$$
+
+
+Therefore the following cases can be considered:
+
+\begin{enumerate}
+\item[Case 1:] $\tilde{v}^l=v^l$, $\tilde{u}^k\neq u^k$
+\item[Case 2:] $\tilde{v}^l \neq v^l$,$\tilde{u}^k=u^k$
+\item[Case 3:] $\tilde{v}^l\neq v^l$, $\tilde{u}^k\neq u^k$  
+\end{enumerate}
+
+Case 1 is similar to the case when there is no $\mathbf{\Delta G}$ and Case 2 is when there is no $\mathbf{G}$. The following two Lemmas derive conditions on $k,n,l$ such that the probability of error in Case 1 and 2 goes to zero.
+
+Define $I_4:=2-H(X|Y)$, $I_2+I'_2:=2-H(X|Y,[X]_{\{ 0,2\}})$.
+\begin{lem}\label{lem: p_err case1_transversal}
+Let $\delta >0$. Consider Case 1, i.e.,$\tilde{v}^l=v^l$, $\tilde{u}^k\neq u^k$, then (\ref{equ: p_err_trans}) converges to zero if
+
+\begin{align*}
+\frac{2k}{n} \leq \min \{I_4, I_2+I'_2\}-\delta
+\end{align*}
+ 
+\end{lem}
+\begin{proof}
+The proof is the same as when there is no $\Delta\mathbf{G}$ and thus is omitted.
+\end{proof}
+\begin{lem} \label{lem: p_err case2_transversal}
+Let $\delta >0$. For Case 2, i.e.,$\tilde{u}^k=u^k$,$\tilde{v}^l \neq v^l$, (\ref{equ: p_err_trans}) converges to zero if
+
+\begin{align*}
+\frac{l}{n} \leq \min\{I_4-\delta, 1\}
+\end{align*}
+
+\end{lem}
+
+
+
+\begin{proof}
+
+The proof follows similar steps taken to get the  proposed bound in Lemma \ref{lem: p_err3, Case 1}. The detailed proof is given in Appendix \ref{sec: proof of case 2}. 
+ 
+\end{proof}
+
+
+
+
+\begin{lem}\label{lem: p_err case3_transversal}
+Let $\delta >0$ . Consider Case 3, i.e.,$\tilde{v}^l\neq v^l$, $\tilde{u}^k\neq u^k$, then (\ref{equ: p_err_trans}) converges to zero if
+
+\begin{equation*}
+\frac{2k}{n}+\frac{l}{n}\leq I_4-\delta
+\end{equation*}
+
+\end{lem}
+
+
+\begin{proof}
+The proof is given in Appendix \ref{sec: proof of case 3 transversal} 
+\end{proof}
+
+As a result of the above Lemmas, the following bounds are achievable :
+
+
+\begin{align}
+\frac{2k}{n} &\leq \min \{I_4, I_2+I'_2\}-\delta\\
+\frac{l}{n} &\leq \min\{I_4-\delta, 1\}\\
+\frac{2k}{n}+\frac{l}{n}&\leq I_4-\delta
+\end{align}

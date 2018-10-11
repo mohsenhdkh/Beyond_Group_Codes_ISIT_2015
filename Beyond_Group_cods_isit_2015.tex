@@ -1,0 +1,710 @@
+%\documentclass[11pt]{article}
+\documentclass[conference]{IEEEtran}
+\usepackage{tikz}
+
+\usepackage[utf8]{inputenc}
+\usepackage[noheadfoot, margin=1in ]{geometry}
+
+\usepackage{amsmath} \usepackage{amsthm} \usepackage{amsfonts} \usepackage{amssymb} 
+
+%\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage{xy}
+\input{xypic}
+\usepackage{bbm}
+\setlength{\footskip}{20pt}
+
+\usepackage{enumerate}
+
+\onecolumn
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{lem}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{claim}{Claim}
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\newtheorem{problem}{Problem} \newtheorem*{prob*}{Problem}
+
+\theoremstyle{remark}
+\newtheorem{rem}{Remark}
+\newtheorem{rems}{Remarks}
+\newtheorem{para}{}
+\newtheorem{summary}{Summary}
+
+
+
+\renewcommand{\Re}[1]{\ensuremath{\operatorname{Re}\left\{#1\right\}}}
+\renewcommand{\Im}[1]{\ensuremath{\operatorname{Im}\left\{#1\right\}}}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+
+\global\long\def\Z{\mathrm{{\bf Z}}}
+\global\long\def\N{\mathrm{{\bf N}}}
+\global\long\def\Gal{\mathrm{Gal}}
+
+
+
+
+
+\global\long\def\RR{\mathbb{R}}
+\global\long\def\CC{\mathbb{C}}
+\global\long\def\NN{\mathbb{N}}
+\global\long\def\QQ{\mathbb{Q}}
+\global\long\def\ZZ{\mathbb{Z}}
+\global\long\def\EE{\mathbb{E}}
+\global\long\def\PP{\mathbb{P}}
+\global\long\def\FF{\mathbb{F}}
+
+ \global\long\def\dd{\cdots}
+\global\long\def\normal{\triangleleft}
+
+\newcommand*{\Scale}[2][4]{\scalebox{#1}{\ensuremath{#2}}}%
+
+
+
+
+\begin{document}
+
+\title{Beyond Group Codes: Point-to-point and Multi-Terminal Settings}
+
+\maketitle
+
+
+\section{Introduction}
+
+
+
+
+
+\section{Preliminaries}
+
+\paragraph{ \textbf{Groups}} 
+A group is a set $\bf H$ equipped with a binary operation $``+"$. We denote such group by $(\bf H,+)$. All groups considered in this paper are \textit{Abelian groups}, i.e., the group operation is commutative. A subset $\bf M$ of $\bf H$ is a \textit{subgroup} and it is denoted by $\bf M \leq H$, if it is closed under the group operation. For a subgroup $\bf M$ in $\bf H$, define a \textit{coset} to be a shift of $\bf M$ by an element $a\in \bf H$. Given a subgroup $\mathbf{M} \leq \mathbf{H}$ and for any $a \in \mathbf{H}$, define $[a]_{\mathbf{M}}:=g+\mathbf{M}$. Let $\mathbf{S} \subseteq \mathbf{H}$ be a subset; $\mathbf{S}$ is a \textit{left transversal} for $\mathbf{M}$ in $\mathbf{H}$ if and only if every coset of $\mathbf{M}$ contains exactly one element of $\mathbf{S}$. 
+
+
+\paragraph{\textbf{Group Codes}}
+Consider a group $\bf H$. A group code $\mathcal{C}$ with length $n$ is a subgroup of $\bf H^n$; where $\mathbf{H}^n$ is the group with $n$ times Cartesian product of $\mathbf{H}$ as a set and element-wise addition as a group operation. A shifted group code is a translation of $\mathcal{C}$ by an element $b^n\in \bf H^n$. The ensemble of group codes is the collection of all subgroups of $\mathbf{H}^n$. Aria \textit{et.al.} \cite{Aria-group} characterized such ensemble. 
+
+
+\paragraph{\textbf{Discrete Memoryless Channel}}
+ $(\mathcal{X},\mathcal{Y}, W_{Y|X})$ denotes a discrete memory-less channel with input alphabet $\mathcal{X}$, output alphabet $\mathcal{Y}$ and conditional probability distribution $W_{Y|X} \in \mathcal{P}(X|\mathcal{Y})$. The \textit{Symmetric Channel Capacity} for such channel is defined to be the mutual information $I(X;Y)$ when $X$ is a uniform random variable taking values from $\mathcal{X}$ and $Y$ is the out put of the channel.
+ 
+\paragraph{\textbf{Discrete Memoryless Source}}
+We consider only discrete-time memoryless sources, in this paper. The source is modeled by a random process $X$ taking values from a set $\mathcal{X}$ with probability distribution $P_X$. The reconstructed source is denoted by another random process $Z$ taking values from $\mathcal{Z}$. The reconstruction is measured by a distortion measure $d: \mathcal{X} \times \mathcal{Z} \rightarrow [0,\infty]$. Such source is denoted by $(\mathcal{X}, \mathcal{Z}, P_X,d)$. The \textit{Symmetric Rate-distortion Function} for such source is defined as 
+
+\begin{equation*}
+R(D)=\min_{P_{Z|X}: \EE\{d(X,Z)\}\leq D} I(X;Z)
+\end{equation*}
+where $Z$ needs to be uniform over $\mathcal{Z}$.
+
+
+
+\section{Pseudo-Group Codes } \label{sec: pseudo+group}
+In this section a new coding scheme called \textit{Pseudo-group code} is proposed. The coding scheme consists of multiple layers of codes. The first layer is a group code. The other layers are not group codes, but they retain some algebraic structures. Therefore, pseudo-group codes obtain looser algebraic structures than group codes; in particular, only a part of a pseudo-group code is a group code. 
+
+Assume $r$ is a positive integer and $p$ is a prime number. In what follows, the construction of a pseudo-group code for the underlying group $\ZZ_{p^r}=\{0,1,\cdots, p^r-1\}$ with addition as the group operation is proposed.
+
+Given a positive integer $n$, a pseudo-group code with length $n$ over the underlying group $\ZZ_{p^r}$ consists of $r$ layers of cods. For $i \in \{0,1,\cdots,r-1\}$, the $i^{th}$ layer has the generator matrix $\mathbf{G}_i$ of dimension $k_i\times n$ with elements belonging to $\ZZ_{p^r}$. Let $p^{r-i}\ZZ_{p^r}=\{0, p^{r-i}, 2\cdot p^{r-i}, \cdots, (p^{i}-1) \cdot p^{r-i}\}$ and $T_i=\{0,1,\cdots, p^{r-i}-1\}$. Therefore, $T_i$ is a transversal for the subgroup $p^{r-i}\ZZ_{p^r}$ in $\ZZ_{p^r}$. Define the code-book of the $i^{th}$ layer as: 
+
+\begin{equation}\label{eq: pseudo group codes layer i}
+\mathcal{C}_i=\{ u_i^{k_i}\mathbf{G}_i: u_i^{k_i}\in T_i^{k_i}\}
+\end{equation}
+
+Now the pseuso-group code is defined as:
+\begin{equation}\label{eq: pseudo group codes}
+\mathcal{C}=\sum_{i=0}^{r-1} \mathcal{C}_i+b^n
+\end{equation}
+
+Where the summation is element-wise and $b^n\in \ZZ_{p^r}^n$ is a dither vector. The rate of this code is  
+\begin{equation}
+R=\sum_{i=0}^{r-1} \frac{k_i}{n} \log_2 |T_i| = \sum_{i=0}^{r-1} \frac{k_i}{n} (r-i) \log_2 p
+\end{equation}
+There is an alternative representation for the above pseudo-group code. Let $\mathbf{J}=\prod_{i=0}^{r-1}T_i^{k_i}$ and define the map 
+\begin{align}\label{eq: phi}
+&\phi :\mathbf{J} \rightarrow \ZZ_{p^r}^n\\\nonumber
+& \phi(\mathbf{a}):=\sum_{i=0}^{r-1} u_i^{k_i}\mathbf{G}_i 
+\end{align}
+
+where $\mathbf{a}=(u_0^{k_0},u_0^{k_1}, \cdots, u_{r-1}^{k_{r-1}})$ is an element of $\mathbf{J}$. Therefore, $\mathcal{C}$ is the image of $\phi$ that is translated by the vector $b^n$. In this paper,  we refer to code-words of $\mathcal{C}$ by $\phi(\mathbf{a})+b^n$ .
+
+For fixed $n$ and $k_i$, the random ensemble of pseudo-group codes consists of all codes of the form $\mathcal{C}$ where elements of the generator matrices $\mathbf{G}_i$ and dither vector $b^n$ are chosen independently of each other and uniformly from the set $\ZZ_{p^r}$.
+
+
+The above construction provides a coding strategy with multiple structured layers of codes. Such layered framework helps pseudo-group codes obtain more flexibility to match the structure of a channel or source as a channel coding or source coding, respectively. Such frameworks achieve the information theoretical limits in some point-to-point settings. It will be shown later in this paper, that pseudo-group codes outperform group codes. In fact, they achieve the symmetric channel capacity and symmetric rate-distortion function in certain point-to-point problems. The next section shows the achievable rate of pseudo-group codes for discrete memory-less channels.  
+
+
+
+
+
+\section{Channel Coding}
+
+Let $(\mathcal{X},\mathcal{Y}, W_{Y|X})$ denote a discrete memoryless channel with input alphabet $\mathcal{X}$, output alphabet $\mathcal{Y}$ and conditional probability distribution $W_{Y|X} \in \mathcal{P}(X|\mathcal{Y})$. In addition, suppose that $\mathcal{X}=\ZZ_{p^r}$ where $r$ is a positive integer and $p$ is a prime number. An achievable rate for the ensemble of the group codes over such channel is derived in \cite{Aria-group 2}.
+
+
+\begin{thm}\label{thm: group codes channel}
+ Suppose $X$ is a random variable with uniform distribution over $\ZZ_{p^r}$. For any integer $0\leq s \leq r-1$, let $[X]_{s}=X+M_s$; where $M_s = p^s\ZZ_{p^r}$ is a subgroup of $\ZZ_{p^r}$. The ensemble of the group codes achieves the following bound for the channel $(\mathcal{X}=\ZZ_{p^r},\mathcal{Y}, W_{Y|X})$:
+
+\begin{equation*}
+R_{g,c.c.}\leq \min_{s=0}^{r-1} \frac{r}{r-s} I(X;Y|[X]_{s})
+\end{equation*}
+\end{thm}
+
+
+%%%%%%%define $\mathbf{s}=(1,2, \cdots, r)$. Also define the vectors $\mathbf{\beta, t} $ and $\mathbf{b}$ as the following:
+%%%%%%%
+%%%%%%%$\mathbf{\beta}=(\beta_i)_{i=1}^r$ such that $\sum_{i=1}^r \beta_i=1, \beta_i \geq 0$
+%%%%%%%
+%%%%%%%$\mathbf{t}=(t_i)_{i=1}^r$ such that $0 \leq t_i \leq i$
+%%%%%%%
+%%%%%%%$\mathbf{b}=(b_i)_{i=1}^r$ with $b_i \in \ZZ_{p^r}$
+%%%%%%%
+%%%%%%%Define $\mathbf{\eta}=(\eta_{i,j})_{i,j =1}^r$ with $\eta_{i,j}$ as integers that satisfy $0\leq \eta_{i,j}\leq min(i,j)$. 
+%%%%%%%
+%%%%%%%$\omega_{t}=\frac{\sum_{i=1}^r t_i \beta_i \log_2 p}{\sum_{i=1}^r i \beta_i \log_2 p}$
+%%%%%%%
+%%%%%%%\begin{equation*}
+%%%%%%%\theta(\eta)=\big(\min_{\substack{1\leq j \leq r\\ \beta_j >0}} |i-s|^+ + \eta_{i,j}\big)_{i=1}^r
+%%%%%%%\end{equation*}
+%%%%%%%
+%%%%%%%
+%%%%%%%$\mathbf{M}_{\eta}= \oplus_{i=1}^r p^{\theta(\eta)_i} \ZZ_{p^r}$
+%%%%%%%
+%%%%%%%For every $\eta, \mathbf{b}$, let $X_{\eta, \mathbf{b}}$ be a random variable with uniform distribution over $\mathbf{M}_{\eta}+\mathbf{b}$. Moreover, let $[X_{\eta, \mathbf{b}}]_{\mathbf{t}}=X_{\eta, \mathbf{b}}+\mathbf{M}_{\eta+\mathbf{t}}$
+%%%%%%%\begin{thm}
+%%%%%%%The capacity of the ensemble of the group codes for the channel $(\mathcal{X}=\ZZ_{p^r},\mathcal{Y}, W_{Y|X})$ is
+%%%%%%%
+%%%%%%%\begin{equation*}
+%%%%%%%I_{c.c}(X;Y):=\sup_{\alpha,\omega}\min_{\mathbf{t} \neq \mathbf{s}} \frac{1}{1-\omega_{\mathbf{t}}} \sum_{\mathbf{\eta,b}} \alpha_{\mathbf{\eta,\mathbf{b}}}I(X_{\eta,\mathbf{b}};Y|[X_{\eta, \mathbf{b}}]_{\mathbf{t}})
+%%%%%%%\end{equation*}
+%%%%%%%where $\alpha_{\mathbf{\eta,\mathbf{b}}}$ must satisfy $0\leq \alpha_{\mathbf{\eta,\mathbf{b}}}\leq 1$.
+%%%%%%%\end{thm}
+
+
+%\begin{thm}
+%Suppose $(\mathbf{H},+)$ is an abelian group. The capacity of the ensemble of the group codes for the channel $(\mathcal{X}=H,\mathcal{Y}, W_{Y|X})$ is
+%
+%\begin{equation*}
+%I^H_{c.c}(X;Y):=\sup_{\alpha,\omega}\min_{\hat{\theta}\neq \mathbf{s}} \frac{1}{1-\omega_{\hat{\theta}}}\sum_{\eta,b}\alpha_{\eta,b}I(X_{\eta,b};Y|[X_{\eta,b}]_{\hat{\theta}})
+%\end{equation*}
+
+
+ Consider the ensemble of pseudo-group codes with length $n$ for the channel $(\mathcal{X}=\ZZ_{p^r},\mathcal{Y}, W_{Y|X})$. To show the achievability result, we use a random coding argument using  the ensemble of pseudo-group codes over the underlying group $\ZZ_{p^r}$ defined in Section \ref{sec: pseudo+group}. The random encoder is characterized by the random map $\phi$ defined in (\ref{eq: phi}) and random vector $B^n$. Given a message  $\mathbf{a}\in \mathbf{J}$, the encoder sends $x^n=\phi(\mathbf{a})+B^n$. Upon receiving the channel's output sequence $y^n$ the decoder finds $\tilde{\mathbf{a}} \in \mathbf{J}$ such that its corresponding codeword $\phi(\tilde{\mathbf{a}})+B^n$ is jointly typical with $y^n$ with respect to the joint distribution $P_X W_{Y|X}$, where $P_X$ is a uniform probability distribution over $\ZZ_{p^r}$. The decoder declares error if there is no $\tilde{\mathbf{a}}$ or if $\tilde{\mathbf{a}}$ is not unique. Suppose the message sequence $\mathbf{a}$ is chosen randomly and uniformly from $\bf J$.
+
+
+\begin{thm}\label{thm: pseudo_channel}
+The ensemble of pseudo-group codes achieves the symmetric capacity of any discrete, memoreless channel $(\mathcal{X}=\ZZ_{p^r},\mathcal{Y}, W_{Y|X})$.
+\end{thm}
+
+A proof of this theorem for the special case $\mathcal{X}=\ZZ_4$ is derived in the next Subsection. 
+
+\subsection{Results for $\ZZ_4$ channel}
+In this subsection, we first prove the result of Theorem \ref{thm: pseudo_channel} for the channel $(\mathcal{X}=\ZZ_4,\mathcal{Y}, W_{Y|X})$, then  we show that in certain settings pseudo-group codes strictly outperform group codes. The following lemma restates Theorem \ref{thm: pseudo_channel} when $\mathcal{X}=\ZZ_4$.
+
+\begin{lem}\label{lem: pseudo_group_for_chann_Z_4}
+The capacity of the ensemble of pseudo group codes for any discrete, memoreless channel $(\mathcal{X}=\ZZ_4,\mathcal{Y}, W_{Y|X})$ is
+\begin{equation*}
+R^*=I(X;Y)
+\end{equation*}
+where $X$ is a random variable with uniform distribution over $\ZZ_4$. 
+\end{lem}
+
+
+\begin{proof}
+We use a random coding argument to prove that if $R\leq R^*$ then the average probability of error of the ensemble of pseudo-group codes approaches to $0$. The converse proof is immediate as pseudo-group codes induces a uniform distribution into the channel. Based on (\ref{eq: pseudo group codes layer i}) and (\ref{eq: pseudo group codes}), the coding scheme consists of two layers of codes. If $\mathcal{C}_1$ and $\mathcal{C}_2$ are the code-book of the first and the second layer, respectively, then for positive integers $k_0$ and $k_1$ we have 
+
+\begin{align*}
+\mathcal{C}_1&=\{u_0^{k_0}\mathbf{G}_0: u_0^{k_0}\in \ZZ_4^{k_0}\}\\
+\mathcal{C}_2&=\{u_1^{k_1}\mathbf{G}_1: u_1^{k_1}\in \{0,1\}^{k_1}\}
+\end{align*}
+where $\mathbf{G}_0$ and $\mathbf{G}_1$ are the generator matrices with elements belonging to $\ZZ_4$.
+Since the underlying group is $\ZZ_4$, as defined in Section \ref{sec: pseudo+group}, $T_0=\ZZ_4$ and $T_1=\{0,1\}$. As a result, the code-book of this coding scheme is 
+
+\begin{equation*}
+\mathcal{C}=\{u_0^{k_0}\mathbf{G}_0+u_1^{k_1}\mathbf{G}_1+b^n: u_0^{k_0}\in T_0^{k_0}, u_1^{k_1}\in T_1^{k_1}\}
+\end{equation*}
+where $b^n\in \ZZ_4^n$ is the dither vector. Now given the message $\mathbf{a}=(u_0^{k_0},u_1^{k_1})$, the encoder sends $\phi(\mathbf{a})+b^n$. The decoder finds a unique $\tilde{\mathbf{a}}\in \ZZ_4^{k_0}\times \{0,1\}^{k_1}$ such that $\phi(\mathbf{\tilde{a}})+b^n$ is jointly typical with $y^n$, the channel's output. An error is declared if $\tilde{\mathbf{a}}$ is not found or it is not unique. Thus, the error is the union of two events $E_1$ and $E_2$. $E_1$ happens if $\phi(\mathbf{a})+b^n$ is not jointly typical with $y^n$. $E_2$ occurs if there are more than one $\mathbf{a}$ such that $\phi(\mathbf{a})+b^n$ is jointly typical with $y^n$. Hence the probability of error is upper bounded by $P_{err}\leq P(E_1)+P(E_2 \cap E_1^c)$. It is straightforward to show that $P(E_1)$ goes to $0$ as $n$ approaches to $\infty$. Define $J=\ZZ_4^{k_0}\times \{0,1\}^{k_1}$. For fixed $\mathbf{G}_0, \mathbf{G_2}$ and $b^n$ we have
+
+\begin{align*}
+P(E_2 \cap E_1^c)=\sum_{\mathbf{a}\in J}\frac{1}{|J|} \sum_{x^n\in A_\epsilon^n(X)} \mathbbm{1}\{ x^n \in \mathcal{C}\} \sum_{y^n\in A_\epsilon^n(Y|x^n)}  W_{Y|X}^n(y^n|x^n) \mathbbm{1}\{ \exists ~ \tilde{x}^n\in \mathcal{C} \cap A_\epsilon^n(X|y^n), \tilde{x}^n\neq x^n \}
+\end{align*}
+
+Note that
+\begin{align*}
+\mathbbm{1}\{ \exists ~ \tilde{x}^n\in \mathcal{C} \cap A_\epsilon^n(X|y^n), \tilde{x}^n\neq x^n \}=\sum_{\substack{\tilde{\mathbf{a}} \in J \\\tilde{ \mathbf{a}}\neq \mathbf{a}}}\sum_{\tilde{x}^n\in A_\epsilon^n(X|y^n)}\mathbbm{1}\{ \phi(\tilde{\mathbf{a}})+b^n=\tilde{x}^n\}
+\end{align*}
+
+Now suppose elements of $\mathbf{G}_0$ and $ \mathbf{G}_1$ are independently and uniformly chosen from $\ZZ_4$. Let also $B^n$ be chosen randomly and uniformly over $\ZZ_4$. Thus, using the union bound, the average probability of error for this random ensemble is
+
+\begin{align}\label{equ: p_err}
+P_{e, ave}&=\EE\{ P_{err} \}\\\nonumber
+&\leq\sum_{\mathbf{a}\in J} \sum_{\substack{\tilde{\mathbf{a}} \in J \\\tilde{\mathbf{a}}\neq \mathbf{a}}} \sum_{x^n\in A_\epsilon^n(X)} \sum_{y^n\in A_\epsilon^n(Y|x^n)} \sum_{\tilde{x}^n\in A_\epsilon^n(X|y^n)} \frac{1}{|J|} W_{Y|X}^n(y^n|x^n) \PP\{ \phi(\tilde{\mathbf{a}})+B^n=\tilde{x}^n, \phi(\mathbf{a})+B^n=x^n\}
+\end{align}
+
+The following lemma calculates the probability inside the above summations.
+
+\begin{lem}\label{lem: probability of phi}
+Suppose $\tilde{\mathbf{a}}, \mathbf{a} \in J, \tilde{\mathbf{a}} \neq \mathbf{a}$ and $x^n, \tilde{x}^n \in \ZZ_4^n$ then 
+
+\begin{align*}
+\PP\{ \phi(\tilde{\mathbf{a}})+B^n=\tilde{x}^n, \phi(\mathbf{a})+B^n=x^n\}=\left\{ \begin{array}{cc}
+\frac{1}{4^n}\frac{1}{2^n}\mathbbm{1}\{x^n-\tilde{x}^n \in (2\ZZ_4)^n \} & \mathbf{a}-\tilde{\mathbf{a}}\in (2\ZZ_4)^{k_0}\times \{0\}^{k_1} \\ 
+\frac{1}{4^n}\frac{1}{4^n} & otherwise
+\end{array} 
+\right.
+\end{align*}
+where $2\ZZ_4:=\{0,2\}$.
+\end{lem}
+
+
+\begin{proof}
+Note since $\phi (\cdot)$ preserves the group addition, we can write:
+\begin{align*}
+\PP\{ \phi(\tilde{\mathbf{a}})+B^n=\tilde{x}^n, \phi(\mathbf{a})+B^n=x^n\}=\PP\{ \phi(\tilde{\mathbf{a}})+B^n=\tilde{x}^n, \phi(\mathbf{a}-\tilde{\mathbf{a}})=x^n-\tilde{x}^n\}
+\end{align*}
+
+Note $\phi(\tilde{\mathbf{a}})+B^n$ is a uniform random variable and independent of  $\phi(\mathbf{a}-\tilde{\mathbf{a}})$. Thus
+\begin{align*}
+\PP\{ \phi(\tilde{\mathbf{a}})+B^n=\tilde{x}^n, \phi(\mathbf{a}-\tilde{\mathbf{a}})=x^n-\tilde{x}^n\}=\frac{1}{4^n} \PP\{\phi(\mathbf{a}-\tilde{\mathbf{a}})=x^n-\tilde{x}^n\}
+\end{align*}
+Observe that $\mathbf{a}-\tilde{\mathbf{a}}=(\eta_0^{k_0},\eta_1^{k_1})$, for some $\eta_0^{k_0} \in \ZZ_4^{k_0}$ and $\eta_1^{k_1}\in \{0,1\}^{k_1}$. Also note that $\phi(\mathbf{a}-\tilde{\mathbf{a}})=\eta_0^{k_0}\mathbf{G}_0+\eta_1^{k_1}\mathbf{G}_1$. To calculate $\PP\{\phi(\mathbf{a}-\tilde{\mathbf{a}})=x^n-\tilde{x}^n\}$,  there are three cases depending on the value of $\eta_0^{k_0}$ and $\eta_1^{k_1}$:
+
+\begin{enumerate}
+\item $\eta_1^{k_1}=\mathbf{0}, \mathbf{0} \neq \eta_0^{k_0}\in 2\ZZ_4^{k_0}$:
+
+ Without loss of generality, let the first element of $\eta_0^{k_0}$ be $2$ then, in this case  $\phi(\mathbf{a}-\tilde{\mathbf{a}})=2\mathbf{G}_{0,1}+\sum_{i=2}^n \eta_{0,i}\mathbf{G}_{0,i}$; where $\mathbf{G}_{0,i}$ is the $i^{th}$ raw of $\mathbf{G}_0$. Since $2\mathbf{G}_{0,1}$ is uniform over $2\ZZ_4^n$ and is independent of the other terms, $\phi(\mathbf{a}-\tilde{\mathbf{a}})$ is a uniform random variable over $2\ZZ_4^n$.
+
+\item $\eta_1^{k_1}=\mathbf{0}, \mathbf{0} \neq \eta_0^{k_0}\in \ZZ_4^{k_0}-2\ZZ_4^{k_0}$:
+In this case, we use a similar argument. Assume that $\eta_{0,1}\in \{1,3\}$. Since $\mathbf{G}_{0,1}$ and $3\mathbf{G}_{0,1}$ are uniform over $\ZZ_4^n$ and independent of the other terms,  $\phi(\mathbf{a}-\tilde{\mathbf{a}})$ is uniform over $\ZZ_4^n$.
+
+\item $\eta_1^{k_1}\neq \mathbf{0}$:
+Similar to the previous case, we conclude that in this case $\phi(\mathbf{a}-\tilde{\mathbf{a}})$ is uniform over $\ZZ_4^n$.
+\end{enumerate}
+
+\end{proof}
+
+Using Lemma \ref{lem: probability of phi}, we have
+
+\begin{align} \label{equ: p_err simple}
+P_{e, ave} &\leq \sum_{\substack{\mathbf{a}\neq \tilde{\mathbf{a}} \in J \\\mathbf{a}-\tilde{\mathbf{a}} \in (2\ZZ_4)^{k_0}\times \{0\}^{k_1}} } \sum_{x^n\in A_\epsilon^n(X)} \sum_{y^n\in A_\epsilon^n(Y|x^n)} \sum_{\substack{\tilde{x}^n\in A_\epsilon^n(X|y^n)\\ x^n-\tilde{x}^n \in (2\ZZ_4)^n}} \frac{1}{|J|} W_{Y|X}^n(y^n|x^n) \frac{1}{2^n}\frac{1}{4^n}\\\nonumber
+&+\sum_{\mathbf{a}\neq \tilde{\mathbf{a}} \in J }  \sum_{x^n\in A_\epsilon^n(X)} \sum_{y^n\in A_\epsilon^n(Y|x^n)} \sum_{\tilde{x}^n\in A_\epsilon^n(X|y^n)} \frac{1}{|J|} W_{Y|X}^n(y^n|x^n) \frac{1}{4^n}\frac{1}{4^n}
+\end{align}
+
+Note the most inner terms in the summations in (\ref{equ: p_err simple}) do not depend on $\tilde{x}^n$. Therefore the summation over $\tilde{x}^n$ can be replaced by the size of the set $\{\tilde{x}^n\in A_\epsilon^n(X|y^n): x^n-\tilde{x}^n \in (2\ZZ_4)^n\}$. This term can be determined by the following lemma which is a restatement of Lemma V.II.2. in \cite{Aria-group}:
+\begin{lem}\label{lem: Subgroup_typicality}
+Suppose $(\mathbf{H},+)$ is a group and $\bf M \leq H$ is a subgroup of $\mathbf{H}$. Let $X$ be a random variable taking values from $\bf H$. If $y^n \in A_{\epsilon}^n(Y)$ and $x^n \in A_{\epsilon}^n (X|y^n)$ then 
+\begin{equation*}
+(x^n+\mathbf{M}^n) \cap A_{\epsilon}^n(X|y^n)=A_{\epsilon}^n(X|y^n, [X])
+\end{equation*}
+where $[X]=X+\mathbf{M}$.
+\end{lem}
+
+
+Thus, using Lemma \ref{lem: Subgroup_typicality} and the fact that $|A_{\epsilon}^n (X|y^n, [X])|\leq 2^{nH(X|Y,[X])}, |A_{\epsilon}^n (X|y^n)|\leq 2^{nH(X|Y)}$ and $|A_{\epsilon}^n(X)|=4^n$, we have
+
+\begin{align*}
+P_{e, ave} &\leq \sum_{\substack{\mathbf{a}\neq \tilde{\mathbf{a}} \in J \\\mathbf{a}-\tilde{\mathbf{a}} \in (2\ZZ_4)^{k_0}\times \{0\}^{k_1}} } \sum_{x^n\in A_\epsilon^n(X)} \sum_{y^n\in A_\epsilon^n(Y|x^n)} 2^{nH(X|Y,[X])} \frac{1}{|J|} W_{Y|X}^n(y^n|x^n) \frac{1}{2^n}\frac{1}{4^n}\\
+&+\sum_{\mathbf{a}\neq \tilde{\mathbf{a}} \in J }  \sum_{x^n\in A_\epsilon^n(X)} \sum_{y^n\in A_\epsilon^n(Y|x^n)} 2^{nH(X|Y)} \frac{1}{|J|} W_{Y|X}^n(y^n|x^n) \frac{1}{4^n}\frac{1}{4^n}\\
+ &\leq \sum_{\substack{\mathbf{a}\neq \tilde{\mathbf{a}} \in J \\\mathbf{a}-\tilde{\mathbf{a}} \in (2\ZZ_4)^{k_0}\times \{0\}^{k_1}} }  2^{nH(X|Y,[X])} \frac{1}{|J|} \frac{1}{2^n}+\sum_{\mathbf{a}\neq \tilde{\mathbf{a}} \in J }  2^{nH(X|Y)} \frac{1}{|J|} \frac{1}{4^n}\\
+ &= |J|2^{k_0} 2^{nH(X|Y,[X])} \frac{1}{|J|} \frac{1}{2^n}+|J|^2  2^{nH(X|Y)} \frac{1}{|J|} \frac{1}{4^n}\\
+ &=2^{n[\frac{k_0}{n}-1+H(X|Y,[X])]}+2^{n[\frac{2k_0+k_1}{n}-2+H(X|Y)]}
+\end{align*}
+As a result, in order for $P_{e, ave}$ to go to $0$ it requires to have  
+\begin{align*}
+\frac{k_0}{n} &< 1-H(X|Y,[X])\\
+\frac{2k_0+k_1}{n} &< 2-H(X|Y)
+\end{align*}
+
+Assuming that $X$ is uniform over $\ZZ_4$, as $R=\frac{2k_0+k_1}{n}$, by the Fourier-Motzkin elimination we get
+
+\begin{align*}
+R-\frac{k_1}{n} &\leq I(X;Y|[x])\\
+R &\leq  I(X;Y)
+\end{align*}
+
+Set $\frac{k_1}{n}=\max \{I(X;Y)-I(X;Y|[x]),0\}$. As $I(X;Y)-I(X;Y|[x])\leq 1$, this value is valid for $\frac{k_1}{n}$ and hence the bound $R\leq I(X;Y)$ is achievable.
+\end{proof}
+
+Now in order to compare pseudo-group codes and group codes in this example, it is necessary to derive the capacity of group codes. The following lemma shows that the lower bound in Theorem \ref{thm: group codes channel} is indeed tight when $\mathcal{X}=\ZZ_4$.
+
+\begin{lem}\label{lem: group_chann_z_4}
+The capacity of group codes for the channel $(\mathcal{X}=\ZZ_4,\mathcal{Y}, W_{Y|X})$ is
+
+\begin{equation}
+C_{g,c.c.}=\min \{ I(X;Y),2I(X;Y|[X])\}
+\end{equation} 
+where $X$ is uniform over $\ZZ_4$ and $[X]=X+2\ZZ_4$.
+\end{lem}
+  
+As a more general and rigorous result, for an arbitrary abelian group $\mathbf{H}$, the capacity of group codes for the channel $(\mathcal{X}=\mathbf{H},\mathcal{Y}, W_{Y|X})$ is derived in \cite{Aria-group}. Therefore, the above Lemma can be considered as a special case of that result. 
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{Drawing1.pdf}
+\caption{An example of a channel for which pseudo-group codes strictly outperform group codes. }
+\label{fig: examp channel}
+\end{figure}
+
+Finally having Lemma \ref{lem: pseudo_group_for_chann_Z_4} and \ref{lem: group_chann_z_4}, there is a channel $(\mathcal{X}=\ZZ_4,\mathcal{Y}, W_{Y|X})$ such that the achievable rate of pseudo-group codes is strictly greater than the capacity of group codes. To see this, consider channel given in  Fig. \ref{fig: examp channel}. For this channel $I(X;Y|[X])=0$ and $I(X;Y)=1$. Thus, the capacity of group codes for this channel is $I_{c.c}(X;Y)=0$ while that of the pseudo-group codes is $I(X;Y)=1$.
+
+ 
+\section{The Source Coding Problem}
+In this section we show that the ensemble of pseudo-group codes achieves the symmetric rate-distortion function of any discrete memoryless source $(\mathcal{X}, \mathcal{Z}=\ZZ_{p^r}, P_X,d)$. in addition, it is shown that in some cases pseudo-group codes strictly outperform group codes.
+
+The problem of source coding using group codes is studied in [Aria ?]. For a group $\ZZ_{p^r}$ and any integer $1\leq s \leq r$ define $\mathbf{H}_s=p^s\ZZ_{p^r}$. The following theorem derives an achievable rate for group codes: 
+
+
+\begin{thm}\label{thm: group_codes_source}
+Suppose $Z$ is a uniform random variable over $\ZZ_{p^r}$ with conditional distribution $P_{Z|X}$. Let $(\mathcal{X},\mathcal{Z}=\ZZ_{p^r},P_X,d)$ be a discrete-time and memoreless source. For a given distortion $D$, the achievable rate of group codes is 
+
+\begin{equation*}
+R_{g.s.c}(D) \geq \min_{P_{Z|X}: \EE\{d(Z,X\}\leq D }\max_{s=1}^r \frac{r}{s} I([Z]_s;X) 
+\end{equation*}
+
+where $[Z]_s=Z+\mathbf{H}_s$.
+
+\end{thm}
+
+
+
+%%%\begin{thm}
+%%%Let $(\mathcal{X},\mathcal{Z},P_X,d)$ be a discrete-time and memoreless source. For a given distortion $D$, the achievable rate of group codes is 
+%%%
+%%%\begin{equation*}
+%%%R(D)=\inf_{\alpha, \omega} \inf_{Z} \max_{\hat{\theta}\neq 0} \frac{1}{\omega_{\hat{\theta}}}\sum_{\eta, b}\alpha_{\eta,b} I([Z_{\eta,b}]_{\hat{\theta}};X)
+%%%\end{equation*}
+%%%where $\alpha, \omega$ and $U$ need to satisfy
+%%%
+%%%\begin{equation*}
+%%%\sum_{\eta, b} \alpha_{\eta, b} \EE\{d(X,U_{\eta, b}\}\leq D
+%%%\end{equation*}
+%%%\end{thm}
+
+Consider the ensemble of pseudo-group codes defined in Section \ref{sec: pseudo+group}. We use this ensemble to achieve the symmetric rate-distortion function:
+\begin{thm}\label{thm: source coding pseudo group codes}
+The ensemble of pseudo-group codes achieves the symmetric rate-distortion function for the source $(\mathcal{X},\mathcal{Z}=\ZZ_{p^r},P_X,d)$.
+\end{thm}
+
+The next subsection provides the results for the especial case when the underlying group is $\ZZ_4$. Also, theorem \ref{thm: source coding pseudo group codes} is proved for this special case.
+
+
+\subsection{Results for $\ZZ_4$}
+In this subsection we first prove theorem \ref{thm: source coding pseudo group codes} for the special case when $\mathcal{Z}=\ZZ_4$. Then we show that pseudo-group codes strictly outperform group codes. 
+
+Consider the source $(\mathcal{X},\mathcal{Z}=\ZZ_4,P_X,d)$. We show that pseudo-group codes achieve the symmetric rate-distortion function. Similar to the channel coding problem we use a random coding argument. A random code-book $\mathcal{C}$ is the image of a random map $\phi$ ( defined in (\ref{eq: phi})) that is shifted by a random vector $B^n \in \ZZ_4^n$. Let $D$ be a non-negative real number. Fix a joint distribution $P_{XZ}$ such that $\EE\{d(X,Z)\}\leq D$ and $P_{Z}$ as the marginal of $P_{XZ}$ is uniform over $\ZZ_4$.  Given a sequence $x^n$ of the source, the encoder finds $\mathbf{a}\in J$ such that $z^n=\phi(\mathbf{a})+B^n$ is jointly typical with $x^n$ with respect to the probability distribution $P_{XZ}$. If there are more than one such $\mathbf{a}$, randomly select one. An error is declared, if no such $\mathbf{a}$ is found.  Upon receiving the sequence $\mathbf{a}$, the decoder reveal $z^n$ as the source reconstruction.
+
+Suppose there is no error in the encoder. Since $z^n$ is jointly typical with $x^n$, for large enough $n$, $\frac{1}{n}\sum _{i=1}^n d(x_i,z_i)\approx \EE\{d(X,Z)\}\leq D$. Therefore, it remains to find conditions so that the probability of encoding error goes to $0$.
+
+For $x^n\in \mathcal{X}^n$, define
+ \begin{equation*}
+ \theta(x^n)=\sum_{z^n \in A_{\epsilon}^n(Z|x^n)}\mathbbm{1}\{z^n \in \mathcal{C}\}
+ \end{equation*}
+
+ We can write $\theta(x^n)$ as
+
+\begin{equation*}
+ \theta(x^n)=\sum_{z^n \in A_{\epsilon}^n(Z|x^n)}\sum_{\mathbf{a}\in J}\mathbbm{1}\{z^n = \phi(\mathbf{a})+B^n\}
+\end{equation*}
+
+Note $\theta(x^n)$ is the number of code-words in $\mathcal{C}$ that are jointly typical with $x^n$. Thus an encoding error occurs if and only if $\theta(x^n)=0$. We use the Chebyshev's inequality to bound the probability of $\theta(x^n)=0$:
+\begin{equation*}
+P(\theta(x^n)=0)\leq \frac{Var\{\theta(x^n)\}}{\EE\{\theta(x^n)\}^2}
+\end{equation*}
+
+We have
+
+\begin{align*}
+\EE\{\theta(x^n)\}&= \sum_{z^n \in A_{\epsilon}^n(Z|x^n)}\sum_{\mathbf{a}\in J}P\{z^n = \phi(\mathbf{a})+B^n\}\\
+&=\frac{|A_{\epsilon}^n(Z|x^n)|\cdot |J|}{4^n}\\
+&\approx \frac{|J|}{4^n}2^{nH(Z|X)}
+\end{align*}
+
+
+To calculate $Var\{\theta(x^n)\}$ first need to calculate
+\begin{align*}
+\EE\{\theta(x^n)^2\}&= \sum_{\tilde{z}^n, z^n \in A_{\epsilon}^n(Z|x^n)}\sum_{\tilde{\mathbf{a}}, \mathbf{a}\in J}P\{z^n = \phi(\mathbf{a})+B^n,\tilde{z}^n = \phi(\mathbf{\tilde{a}})+B^n\}\\
+&= \sum_{z^n \in A_{\epsilon}^n(Z|x^n)}\sum_{\mathbf{a}\in J}P\{z^n = \phi(\mathbf{a})+B^n\}+\sum_{\tilde{z}^n \neq z^n \in A_{\epsilon}^n(Z|x^n)}\sum_{\tilde{\mathbf{a}} \neq \mathbf{a}\in J}P\{z^n = \phi(\mathbf{a})+B^n,\tilde{z}^n = \phi(\mathbf{\tilde{a}})+B^n\}
+\end{align*}
+
+Using the above calculation and Lemma \ref{lem: probability of phi} and \ref{lem: Subgroup_typicality}, we have
+
+\begin{align*}
+\EE\{\theta(x^n)^2\} &\leq \frac{|J|}{4^n}2^{nH(Z|X)} + \sum_{\substack{ \tilde{z}^n , z^n \in A_{\epsilon}^n(Z|x^n)\\ \tilde{z}^n-z^n \in (2\ZZ_4)^n}}\sum_{\substack{ \tilde{\mathbf{a}}, \mathbf{a} \in J \\ \tilde{\mathbf{a}}-\mathbf{a} \in (2\ZZ_4)^{k_0} \times \{0\}^{k_1}}} \frac{1}{4^n}\frac{1}{2^n}\\
+&+\sum_{\substack{ \tilde{z}^n , z^n \in A_{\epsilon}^n(Z|x^n)\\ \tilde{z}^n-z^n \notin (2\ZZ_4)^n}}\sum_{\substack{ \tilde{\mathbf{a}}, \mathbf{a}\in J \\ \tilde{\mathbf{a}}-\mathbf{a} \notin (2\ZZ_4)^{k_0} \times \{0\}^{k_1}}} \frac{1}{4^n}\frac{1}{4^n}\\
+&\leq \frac{|J|}{4^n}2^{nH(Z|X)}+2^{nH(Z|X,[Z])}2^{nH(Z|X)} \frac{2^{k_0} \cdot |J|}{4^n \cdot 2^n}+2^{2nH(Z|X)} \frac{|J|^2}{4^n \cdot 4^n}
+\end{align*}
+
+Thus 
+\begin{align*}
+Var\{\theta(x^n)\}&=\EE\{\theta(x^n)^2\}-\EE\{\theta(x^n)\}^2\\
+&\leq \frac{|J|}{4^n}2^{nH(Z|X)}+2^{nH(Z|X,[Z])}2^{nH(Z|X)} \frac{2^{k_0} \cdot |J|}{4^n \cdot 2^n}
+\end{align*}
+
+
+As a result, since $|J|=2^{2k_0+k_1}$, we have:
+
+\begin{align*}
+P(\theta(x^n)=0)&\leq \frac{Var\{\theta(x^n)\}}{\EE\{\theta(x^n)\}^2}\\
+&\leq  2^{n\big(2-\frac{2k_0+k_1}{n} -H(Z|X)\big)} +   2^{n\big(1-\frac{k_0+k_1}{n}+H(Z|X,[Z])-H(Z|X)\big)}
+\end{align*}
+
+Therefore, in order to get $P(\theta(x^n)=0)\rightarrow 0$, we require the exponent of the above terms to be negative. Therefore, given the fact that $H(Z|X,[Z])-H(Z|X)=H([Z]|X)$, the following bounds need to be satisfied:
+\begin{align*}
+\frac{2k_0+k_1}{n} &> 2-H(Z|X)\\
+\frac{k_0+k_1}{n} &> 1-H([Z]|X)
+\end{align*}
+
+The rate of the pseudo-group code is defined as $R=\frac{2k_0+k_1}{n}$. Hence, by the Fourier-Motzkin elimination, we get
+\begin{align*}
+R &> I(X;Z)\\
+R+\frac{k_1}{n} &> 2I([Z];X)
+\end{align*}
+
+Setting $\frac{k_1}{n}=2I([Z];X)-I(Z;X)$ and given the fact that $2I([Z];X)-I(Z;X)\leq 1$, the equality $ R=I(X;Z) $ is achievable. Consequently by minimizing over $P_{Z|X}$, the symmetric rate-distortion function is achievable:
+\begin{equation*}
+R=\min_{P_{Z|X}: \EE\{d(X,Z)\}\leq D} I(X;Z)
+\end{equation*}
+
+Where $P_Z$ ( marginal of $P_{XZ}$) needs to be uniform over $\ZZ_4$.
+
+Now to compare this ensemble with group cods we need the rate-distortion function of group codes:
+
+\begin{lem}\label{lem: source coding_ groups_Z_4}
+The achievable rate given in Theorem \ref{thm: group_codes_source} is tight when the underlying group is $\ZZ_4$. Hence the rate-distortion function of group codes is
+\begin{equation}
+R(D)=\min_{P_{Z|X: \EE\{d(X,Z)\}}}\max \{2I([Z];X), I(Z;X)\}
+\end{equation} 
+where $Z$ is uniform over $\ZZ_4$ and $[Z]=Z+2\ZZ_4$.
+\end{lem}
+
+The above lemma is a special case for a more general result addressed in \cite{Aria-group}. Now by Lemma \ref{lem: source coding_ groups_Z_4} and Theorem \ref{thm: source coding pseudo group codes}, it is immediate that pseudo-group codes strictly outperform group codes in certain source coding problems.
+
+
+
+
+
+
+
+\section{Problem Statement}
+In this paper, we explore the loss-less reconstruction of a determined function of two distributed sources. Our problem consists of two distributed sources that are distributively encoded and sent via a  multiple access channel (MAC). The receiver encodes the channels out put aiming to reconstruct a determined function of the two sources. We first model a pair of distributed sources by the following definition.
+
+
+\begin{definition}[Sources]
+A pair of distributed sources is modeled by two random processes. Suppose $S_1, S_2$ are two possibly dependent pair of discrete time random processes, both taking value from the set $\mathcal{S}$. We denote the corresponding pair of sources by $(S_1,S_2, \mathcal{S})$. Also let $P_{S_1,S_2}$ be the joint probability distribution of $S_1$ and $S_2$. The set $\mathcal{S}$ forms a group in this paper and usually denoted by $\mathbf{H}$ where $\mathbf{H}$ is a group with $+$ as the group operation. 
+\end{definition}
+
+Now suppose $(S_1,S_2,\mathcal{S}=\mathbf{H})$ is a pair of distributed sources, where $\mathbf{H}$ is a group. $S_1$ and $S_2$ are encoded to $X_1$ and $X_2$ respectively. Then $X_1, X_2$ communicate with a central receiver that is interested to reconstruct $X_1+X_2$, where $+$ is the group operation. This problem is a special case of a general problem called computation over MAC. Fig. ??? depicts a diagram of such problem. We define the corresponding MAC channel, in the following way: 
+
+
+\begin{definition}(MAC)\label{def: MAC}
+Suppose $X_1$ and $X_2$ are two random variables taking value from $\mathcal{X}=\mathbf{H}$, where $\mathbf{H}$ is a group with operation $+$. The MAC channel in this paper is defined by the conditional probability 
+\begin{equation*}
+W_{Y|X_1+X_2}
+\end{equation*}
+where $Y$ is the channel's output with alphabet $\mathcal{Y}$. $X_1, X_2$ are the two terminals of the MAC channel. As a short hand, we write sometimes this conditional probability as $W$. We denote such MAC channel by $(\mathcal{X},\mathcal{Y},W)$. 
+\end{definition}
+
+
+\begin{definition}(Code for computation over MAC)\label{def: code for comp over mac}
+For positive integers $n,k$ and $\delta \geq 0$, a $(k,n,\delta)$-code for the computation over MAC consists of encoders $f_i:\mathcal{S}^k \rightarrow \mathcal{X}^n$ for $i=1,2$ and the decoder function $g:\mathcal{Y}^n \rightarrow \mathcal{S}^k$, such that if $Y^n$ is the output of the channel with input $f_1(S_1^k), f_2(S_2^k)$ then 
+\begin{equation*}
+P\{ g(Y^n)\neq S^k_1+S^k_2\}\leq \delta
+\end{equation*} 
+
+Where the group addition is element wise.
+\end{definition}
+
+
+
+\begin{definition}(Achievable rate)
+We say $R$ is achievable if for some positive integer $n$ and any $\delta>0$, there exist a $(Rn,n,\delta)$-code.  
+\end{definition}
+
+Note that since we are interested only to recover $S_1+S_2$, decoding $S_1$ or $S_2$ incorrectly is not damaging. 
+ 
+\section{Computation Over MAC}
+For positive integer $r$ and a prime $p$ consider the MAC channel $(\mathcal{X}=\ZZ_{p^r},\mathcal{Y},W)$ as defined in Definition \ref{def: MAC}. Various previously known results showed that using structured codes for multi-terminal problems such as computation over MAC is beneficial. [Aria???] and [dinesh??] studied the applications of group codes for computation over MAC. Using the ensemble of group codes one can achieve larger rates than the Shannon standard approach. However, these achievable rates are note proved to be optimal. We show in this paper that indeed the achievable rates of group codes is not optimal. We further propose a new framework based on the pseudo-group codes such that under certain circumstances it extends all the previously know achievable rates. Let first drive an achievable rate region for the ensemble of group codes:
+
+\begin{figure}
+\centering
+\includegraphics[scale=1]{Comp_Over_MAC.pdf} 
+\caption{sds}
+\end{figure}
+
+
+
+\begin{thm}
+For the $(\mathcal{X}=\ZZ_{p^r},\mathcal{Y},W)$, the ensemble of group codes achieves the following bound:
+
+\begin{equation*}
+R_{g,mac} \leq \min_{s=0}^{r-1} \frac{r}{r-s} I(X;Y|[X]_{s})
+\end{equation*}
+Where $X$ is assumed to be uniform over $\ZZ_{p^r}$.
+\end{thm}
+
+
+\begin{proof}
+The proof is straightforward. For each of the two terminal use the same encoding scheme. Since the group is closed under it's operation having Theorem \ref{thm: group codes channel} proves the achievable rates in this case.
+\end{proof}
+
+
+\subsection{Pseudo-group codes for computation over MAC}
+We propose a new framework based on the ensemble of pseudo-group codes. The framework involves an inner and an outer code. We first describe the inner code. The outer code will be addressed shortly. 
+
+Similar to the pint-to-point setting, for a given positive integer $n$, a pseudo-group framework with length $n$ over the underlying group $\ZZ_{p^r}$ consists of $r$ layers of cods. For $i \in \{0,1,\cdots,r-1\}$, the $i^{th}$ layer has the generator matrix $\mathbf{G}_i$ of dimension $k_i\times n$ with elements belonging to $\ZZ_{p^r}$. Therefore, we can define the corresponding code-book of such framework as 
+
+\paragraph*{Code-book}
+Define the code-book of the $i^{th}$ layer as: 
+
+\begin{equation}\label{eq: Pseudo_MAC layer i}
+\mathcal{E}_i=\{ u_i^{k_i}\mathbf{G}_i: u_i^{k_i}\in T_i^{k_i}\}
+\end{equation}
+Where $T_i=\{0,1,\cdots, p^{r-i}-1\}$. Now the pseuso-group code is defined as:
+\begin{equation}\label{eq: Pseudo_MAC codebook}
+\mathcal{E}=\sum_{i=0}^{r-1} \mathcal{E}_i+b^n
+\end{equation}
+
+Where the summation is element-wise and $b^n\in \ZZ_{p^r}^n$ is a dither vector.  In contrary to the point-to-point setting, we use a specific binning strategy for $\mathcal{E}$ for the computation over MAC. We discuss about such binning later on this Section.
+%Note the code-book $\mathcal{E}$ is differ from $\mathcal{C}$ defined for point-to-point communications. For $\mathcal{C}$, elements of $u_i^{k_i}$ belong to the subset $T_i$ while in $\mathcal{E}$ it belongs to the whole group $\ZZ_{p^r}$. Therefore, $\mathcal{E}$ is a larger code-book than $\mathcal{C}$.
+To define the coding scheme, it is required by Definition \ref{def: code for comp over mac} to define two encoding functions and one decoding rule. The binning strategy is proposed in the definition of the error event.
+
+\paragraph*{Encoders}
+
+Since there are $r$ distinct layers of coding the message is supposed to belong to 
+
+\begin{equation*}
+\mathcal{J}=\bigoplus_{i=0}^{r-1} T_i^{k_i}
+\end{equation*}
+
+ Define the map 
+\begin{align}\label{eq: phi_mac}
+&\Phi :\mathcal{J} \rightarrow \ZZ_{p^r}^n\\\nonumber
+& \Phi(\mathbf{a}):=\sum_{i=0}^{r-1} u_i^{k_i}\mathbf{G}_i 
+\end{align}
+
+where $\mathbf{s}=(u_0^{k_0},u_0^{k_1}, \cdots, u_{r-1}^{k_{r-1}})$ is an element of $\mathcal{J}$. Choose two distinct vectors $b_1^n$ and $b_2^n$ with elements belonging to $\ZZ_{p^r}$. Define the encodes function by 
+\begin{equation*}
+f_i(\mathbf{s}_1)=\Phi(\mathbf{s}_i)+b_i^n \quad  for \quad  i=1,2
+\end{equation*}
+
+\paragraph*{Decoder}
+Upon receiving $y^n$, the channel's output, the decoder finds $\mathbf{z} \in \mathcal{J}+\mathcal{J}$ (with the element wise addition) such that $\Phi(\mathbf{z})+b_1^n+b_2^n$ is jointly typical with $y^n$ with respect to the distribution $P_Z \cdot W_{Y|X_1+X_2}$ where $P_Z$ is a uniform distribution over $\ZZ_{p^r}$. 
+
+\paragraph*{Error Event}
+ The error is declared in if of the two event $E_1$ or $E_2$ occurs.  Let $\mathbf{z}=\mathbf{a}_1+\mathbf{a}_2$. $E_1$ occurs if there is no $\mathbf{z} \in \mathbf{J}$ such that $\Phi(\mathbf{z})+b_1^n+b_2^n$ is jointly typical with $y^n$. To define the event $E_2$, let first define a few terms. For integer $i=0,1$, define the subgroup $\mathbf{H}_i=p^{r-i} \ZZ_{p^r}$. Note $T_i$ is a transversal for the subgroup $\mathbf{H}_i$ in $\ZZ_{p^r}$. Therefore, given $i$, any element $g$ in $\ZZ_{p^r}$ can be written as $g=t_i+h_i$ for a $t_i \in T_i$ and some $h_i \in \mathbf{H}_i$. Now $\forall g \in \ZZ_{p^r}$ define $[g]_i=t_i$ where $i$ ranges from $0$ to $r-1$. Consequently, $[\cdot]_i$ can be regarded as a well defined map from $\ZZ_{p^r}$ to $T_i$. Suppose $\mathcal{S}=\bigoplus_{i=0}^{r-1} \ZZ_{p^r}^{k_i}$. For the special case where $i=0$, it gives $[g]_0=g$. Now define the map 
+
+\begin{align*}
+&\pi : \mathcal{S} \rightarrow \mathcal{J}\\
+&\pi(\mathbf{s})=\big ( [u_i^{k_i}]_i \big )_{i=0}^{r-1}
+\end{align*}
+
+where $[\cdot ]_i$ are applied element wise.
+
+Now we are ready to define the second error event. $E_2$ occurs if there is another sequence $\tilde{\mathbf{z}}$ jointly typical with $y^n$ such that
+
+\begin{equation*}
+\pi(\mathbf{z}-\tilde{\mathbf{z}}) \neq \mathbf{0}
+\end{equation*}
+
+Note if $u_i^{k_i}-\tilde{u}_i^{k_i} \in \mathbf{H}_i^{k_i}$ then no error is declared. Intuitively such definition for the error event is to construct a central binning strategy for each layer of the code. In this strategy, for $i^{th}$ layer, two code-words $u_i^{k_i}\mathbf{G}_i$ and $\tilde{u}_i^{k_i}\mathbf{G}_i$ belong to the same bin, if $u_i^{k_i}$ and  $\tilde{u}_i^{k_i}$ belong to the same co-set of the subgroup $\mathbf{H}^{k_i}_i$ in the group $\ZZ^{k_i}_{p^r}$. Consequently, each bin for the total code is the image of the corresponding co-set of the subgroup $$\bigotimes_{i=0}^{r-1} \mathbf{H}_i^{k_i}$$ under the map $\Phi(\cdot)$.
+
+\paragraph*{Rate of the code}
+The rate of this code is  
+\begin{equation}
+R=\frac{1}{n} \log_2 |\mathcal{E}|= \sum_{i=0}^{r-1} \frac{k_i}{n} \log_2 |T_i| = \sum_{i=0}^{r-1} \frac{k_i}{n} (r-i) \log_2 p
+\end{equation}
+
+
+
+The outer code applied to all layers of codes except the first layer. Thus, it consists of $r-1$ layers of codes. Now given the binning strategy and the inner code the $i^{th}$ layer of the outer code corresponding to $i^{th}$ layer of the inner code sees a MAC channel depicted in Fig. \ref{fig: outer mac}. In this figure $[\cdot ]_i$ is as defined in the Error Event paragraph. Fig. \ref{fig: outer mac} is a noiseless computation over MAC in which the receiver wants to reconstruct  $X_1+X_2$ where the summation is the $\ZZ_{p^r}$ group addition. The symmetric capacity of this channel is achievable using standard structured codes such as \textit{Nested Polar Codes}, \cite{Aria-polar}. The following lemma drives the symmetric capacity of the computation over MAC shown in Fig. \ref{fig: outer mac}.
+
+
+\begin{lem}\label{lem: outer_mac_capacity}
+The capacity of the channel in Fig. \ref{fig: outer mac} is 
+\begin{equation*}
+C_i=(r-i) \log_2 p - H(S_1+S_2|[S_1+S_2]_i)
+\end{equation*}
+
+where the addition is the group $\ZZ_{p^r}$ operation and $S_1, S_2$ are uniform random variable taking values from $\ZZ_{p^r}$ .
+\end{lem} 
+
+Having Lemma \ref{lem: outer_mac_capacity}, one can conclude that the achievable rate of the outer code for $i^{th}$ layer is $C_i$. Define the normalized capacity of this channel as 
+
+\begin{equation*}
+\alpha_i =\frac{C_i}{(r-i) \log_2 p}
+\end{equation*}
+
+Noe the effective rate of the framework is 
+
+\begin{equation*}
+R= \sum_{i=0}^{r-1} \frac{k_i}{n}  \alpha_i (r-i) \log_2 p
+\end{equation*}
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[scale=1]{sss.pdf} 
+%\input{sss.tex}
+\caption{The outer MAC channel. }
+\label{fig: outer mac}
+\end{figure}
+
+
+
+
+
+
+
+For fixed $n$ and $k_i$, the random ensemble of pseudo-group codes consists of all codes of the form $\mathcal{E}$ where elements of the generator matrices $\mathbf{G}_i$ and dither vector $b^n$ are chosen independently of each other and uniformly from the set $\ZZ_{p^r}$. Using a random coding argument we can 
+
+
+
+\begin{thm}
+The achievable rate of pseudo-group codes for the MAC channel $(\mathcal{X},\mathcal{Y}, P_{Y|X_1+X_2})$ is
+
+\begin{equation*}
+R \leq \sum_{s=0}^{r-1} \alpha_s |\min_{s+1\leq i\leq r} I_{[p^i]}-I_{p^{s}}|
+\end{equation*}
+\end{thm}
+
+
+
+
+
+
+
+
+
+
+\input{01mtx.tex}
+
+
+
+
+
+
+
+
+\begin{thebibliography}{1}
+\bibitem{Aria-group}
+A. G. Sahebi, S. S. Pradhan. `` Abelian Group Codes for Source Coding and Channel Coding", May 2013, Online: http://arxiv.org/abs/1305.1598
+
+\bibitem{Aria-group 2}
+Abelian Group Codes for Source Coding and Channel Coding
+ArXiv
+\bibitem{Aria-polar}
+Polar Codes for Some Multi-terminal
+Communications Problems
+ArXiv
+
+\end{thebibliography}
+\end{document}
